@@ -1,4 +1,4 @@
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useRef, useState, useMemo } from "react";
 import {
   CalendarClock,
   CalendarDays,
@@ -28,10 +28,10 @@ const smartViews: Array<View & { icon: typeof CalendarDays; accent: string }> = 
 
 function App() {
   const store = useTodos();
-  const [selectedView, setSelectedView] = useState<View>({ type: "smart", id: "today", title: "今天" });
+  const [selectedView, setSelectedView] = useState<View>({ type: "smart", id: "all", title: "全部" });
   const [draftTitle, setDraftTitle] = useState("");
   const [draftDueDate, setDraftDueDate] = useState("");
-  const [showDraftDate, setShowDraftDate] = useState(false);
+  const draftDateInputRef = useRef<HTMLInputElement>(null);
   const [editingTodoId, setEditingTodoId] = useState<string | null>(null);
   const [listDraft, setListDraft] = useState("");
   const [listColor, setListColor] = useState<ListColor>("#0a84ff");
@@ -82,7 +82,6 @@ function App() {
     });
     setDraftTitle("");
     setDraftDueDate("");
-    setShowDraftDate(false);
   }
 
   async function handleCreateList(event: FormEvent) {
@@ -191,7 +190,7 @@ function App() {
           </div>
         )}
 
-        <form className={`quick-add ${showDraftDate ? "date-open" : ""}`} onSubmit={handleCreateTodo}>
+        <form className="quick-add" onSubmit={handleCreateTodo}>
           <button type="submit" aria-label="添加待办">
             <Plus size={21} />
           </button>
@@ -199,23 +198,24 @@ function App() {
           <button
             className="date-toggle"
             type="button"
-            aria-expanded={showDraftDate}
             aria-label={draftDueDate ? `截止日期：${formatDueDate(draftDueDate)}` : "选择截止日期"}
-            onClick={() => setShowDraftDate((current) => !current)}
+            onClick={() => {
+              draftDateInputRef.current?.showPicker?.();
+              draftDateInputRef.current?.focus();
+            }}
           >
             <CalendarPlus size={19} />
             {draftDueDate && <span>{formatDueDate(draftDueDate)}</span>}
           </button>
-          <label className="quick-add-date-row">
-            <span>截止日期</span>
-            <input
-              aria-label="截止日期"
-              className="date-input"
-              type="date"
-              value={draftDueDate}
-              onChange={(event) => setDraftDueDate(event.target.value)}
-            />
-          </label>
+          <input
+            ref={draftDateInputRef}
+            aria-label="截止日期"
+            className="visually-hidden-date-input"
+            tabIndex={-1}
+            type="date"
+            value={draftDueDate}
+            onChange={(event) => setDraftDueDate(event.target.value)}
+          />
         </form>
 
         <div className="todo-list">

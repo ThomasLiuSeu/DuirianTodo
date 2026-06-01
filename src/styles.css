@@ -378,11 +378,6 @@ h1 {
   flex: 1;
 }
 
-.date-input {
-  max-width: 142px;
-  color: #6e6e73;
-}
-
 .date-toggle {
   display: flex;
   align-items: center;
@@ -402,34 +397,12 @@ h1 {
   color: #0a84ff;
 }
 
-.quick-add-date-row {
-  display: none;
-  align-items: center;
-  gap: 10px;
-  flex: 0 0 auto;
-  min-width: 0;
-}
-
-.quick-add.date-open .quick-add-date-row {
-  display: flex;
-}
-
-.quick-add-date-row span {
-  font-size: 13px;
-  color: #6e6e73;
-  white-space: nowrap;
-}
-
-.quick-add-date-row .date-input {
-  flex: 1;
-  max-width: none;
-  min-width: 0;
-  padding: 8px 12px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 8px;
-  background: white;
-  font-size: 16px;
-  color: #1d1d1f;
+.visually-hidden-date-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .todo-list {
@@ -625,12 +598,6 @@ h1 {
 
   .date-toggle span {
     display: none;
-  }
-
-  .quick-add-date-row {
-    grid-column: 2 / 4;
-    width: 100%;
-    padding-top: 2px;
   }
 
   .editor-grid {
