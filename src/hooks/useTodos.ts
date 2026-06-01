@@ -183,7 +183,7 @@ export function useTodos() {
           due_date: options?.dueDate || null,
           completed: false,
           completed_at: null,
-          sort_order: Date.now(),
+          sort_order: 0,
           created_at: now,
           updated_at: now,
         };
@@ -197,7 +197,6 @@ export function useTodos() {
         title: trimmed,
         notes: options?.notes || null,
         due_date: options?.dueDate || null,
-        sort_order: Date.now(),
       };
       const { error: insertError } = await supabase.from("todos").insert(insert);
       if (insertError) setError(insertError.message);
